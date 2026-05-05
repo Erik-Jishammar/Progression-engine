@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "target": "es2020",
+        "module": "commonjs",
+        "rootDir": "./src",
+        "outDir": "./dist",
+        "strict": true,
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "skipLibCheck": true,
+        "resolvePackageJsonExports": false,
+        "resolvePackageJsonImports": false,
+        "resolveJsonModule": false,
+        "useDefineForClassFields": false
+    },
+    "files": [
+        "./src/index.ts",
+        "./src/prisma.config.ts"
+    ],
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}
