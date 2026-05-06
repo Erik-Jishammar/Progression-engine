@@ -20,6 +20,7 @@ app.get("/api/set", async (req, res) => {
     try {
         const sets = await prisma.setEntry.findMany({
             include: {
+                exercise: true,
                 workoutSession: {
                     include: {
                         user : true // hämta användaren kopplad till session
@@ -37,15 +38,15 @@ app.get("/api/set", async (req, res) => {
 
 app.post("/api/set", async (req, res) => {
     try {
-        const { exercise, weight, reps, workoutSessionId } = req.body;
+        const { weight, reps, workoutSessionId, exerciseId } = req.body;
         
         
         const newSet = await prisma.setEntry.create({
             data: {
-                exercise,
                 weight: parseFloat(weight),
                 reps: parseInt(reps),
-                workoutSessionId: parseInt(workoutSessionId)
+                workoutSessionId: parseInt(workoutSessionId),
+                exerciseId: parseInt(exerciseId)
             },
         });
         res.json(newSet);

@@ -9,7 +9,7 @@ export const getSets = async () => {
     return res.json();
 }
 
-export const createSet = async (data: { exercise: string, weight: number, reps: number, workoutSessionId: number }) => {
+export const createSet = async (data: { exerciseId: number, weight: number, reps: number, workoutSessionId: number }) => {
     const res = await fetch("http://localhost:3000/api/set", {
         method: "POST",
         headers: {
