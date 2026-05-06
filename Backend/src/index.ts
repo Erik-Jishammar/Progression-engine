@@ -18,7 +18,16 @@ app.get("/api/health", (req, res) => {
 
 app.get("/api/set", async (req, res) => {
     try {
-        const sets = await prisma.setEntry.findMany();
+        const sets = await prisma.setEntry.findMany({
+            include: {
+                workoutSession: {
+                    include: {
+                        user : true // hämta användaren kopplad till session
+                    }
+                }
+            }
+        });
+
         res.json(sets);
     } catch (error) {
         console.error("Error fetching sets:", error);

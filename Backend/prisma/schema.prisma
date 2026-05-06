@@ -7,20 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id              Int              @id @default(autoincrement())
+  workoutSessions WorkoutSession[]
+}
+
 model WorkoutSession {
-  id Int @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
 
   setEntries SetEntry[]
+  user       User      @relation(fields: [userId], references: [id])
+  userId     Int
 }
 
 model SetEntry {
-  id Int @id @default(autoincrement())
-  exercise String
-  weight Float
-  reps Int
+  id        Int      @id @default(autoincrement())
+  exercise  String
+  weight    Float
+  reps      Int
   createdAt DateTime @default(now())
 
   workoutSessionId Int
-  workoutSession WorkoutSession @relation(fields: [workoutSessionId], references: [id])
+  workoutSession   WorkoutSession @relation(fields: [workoutSessionId], references: [id])
 }
