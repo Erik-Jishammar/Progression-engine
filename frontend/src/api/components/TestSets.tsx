@@ -16,9 +16,10 @@ export const TestSets = () => {
 
     const handleAddSet = async () => {
         await createSet({
-            exercise: "squats",
-            weight: 120,
-            reps: 5
+            exercise: "deadlift",
+            weight: 180,
+            reps: 10,
+            workoutSessionId: 1
         });
         fetchSets();
     };

@@ -7,10 +7,20 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model SetEntry {
-  id        Int      @id @default(autoincrement())
-  exercise  String
-  weight    Float
-  reps      Int
+model WorkoutSession {
+  id Int @id @default(autoincrement())
   createdAt DateTime @default(now())
+
+  setEntries SetEntry[]
+}
+
+model SetEntry {
+  id Int @id @default(autoincrement())
+  exercise String
+  weight Float
+  reps Int
+  createdAt DateTime @default(now())
+
+  workoutSessionId Int
+  workoutSession WorkoutSession @relation(fields: [workoutSessionId], references: [id])
 }

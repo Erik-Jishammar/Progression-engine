@@ -28,14 +28,15 @@ app.get("/api/set", async (req, res) => {
 
 app.post("/api/set", async (req, res) => {
     try {
-        const { exercise, weight, reps } = req.body;
-        console.log("Received data:", { exercise, weight, reps });
+        const { exercise, weight, reps, workoutSessionId } = req.body;
+        
         
         const newSet = await prisma.setEntry.create({
             data: {
                 exercise,
                 weight: parseFloat(weight),
                 reps: parseInt(reps),
+                workoutSessionId: parseInt(workoutSessionId)
             },
         });
         res.json(newSet);
