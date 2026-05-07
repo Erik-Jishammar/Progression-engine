@@ -34,4 +34,23 @@ export const getAllWorkouts = async(req:Request, res:Response) => {
     }
 }
 
-// get -> specifikt pass via id -> req.params.id 
+export const getWorkoutById = async(req:Request, res: Response) => {
+    try{
+        const {id} = req.params; 
+        const workout = await prisma.workoutSession.findUnique({
+            where :{
+                id: Number(id)
+            }, include: {
+                setEntries:true,
+                user:true
+            }
+        })
+        if(!workout){
+            return res.status(404).json({ error: "workout not found"})
+        }
+        res.status(200).json(workout); 
+    }catch (error){
+        console.error("error fetching workout by id", error); 
+        res.status(500).json({error:"failed to fetch workout"})
+    }
+}
