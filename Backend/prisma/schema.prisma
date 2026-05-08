@@ -17,7 +17,7 @@ model WorkoutSession {
   createdAt DateTime @default(now())
 
   setEntries SetEntry[]
-  user       User       @relation(fields: [userId], references: [id])
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     Int
 }
 
@@ -34,7 +34,7 @@ model SetEntry {
   createdAt DateTime @default(now())
 
   workoutSessionId Int
-  workoutSession   WorkoutSession @relation(fields: [workoutSessionId], references: [id])
+  workoutSession   WorkoutSession @relation(fields: [workoutSessionId], references: [id], onDelete: Cascade)
 
   exerciseId Int
   exercise   Exercise @relation(fields: [exerciseId], references: [id])

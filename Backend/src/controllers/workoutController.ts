@@ -54,3 +54,22 @@ export const getWorkoutById = async(req:Request, res: Response) => {
         res.status(500).json({error:"failed to fetch workout"})
     }
 }
+
+export const deleteWorkout = async(req:Request, res:Response) => {
+    try{
+        const {id} = req.params; 
+
+        const deleteWorkout = await prisma.workoutSession.delete({
+            where: {
+                id: Number(id)
+            }
+        })
+        if(!deleteWorkout){
+            return res.status(404).json({error:"Workout not found"})
+        }
+        res.status(204).json(deleteWorkout);
+    } catch (error) {
+        console.error("error deleting workout", error);
+        res.status(500).json({error: "Failed to delete workout"})
+    }
+}

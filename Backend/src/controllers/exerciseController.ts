@@ -63,3 +63,26 @@ export const getExerciseById = async (req:Request, res:Response) => {
     res.status(500).json({error: "failed to fetch  specific exercise"})
     }
 }
+
+export const updateExercise = async(req:Request, res:Response) => {
+    try{
+        const {id} = req.params; 
+        const {name} = req.body;
+
+        const updateExercise = await prisma.exercise.update({
+            where: {
+                id: Number(id)
+            },
+            data: {
+                name: String(name)
+            }
+        })
+        if (!updateExercise){
+            return res.status(404).json({error: "exercise could not update"})
+        }
+        res.status(200).json(updateExercise);
+    } catch(error) {
+        console.error("error updating exericse"); 
+        res.status(500).json({error: "Failed to update set"})
+    }
+}

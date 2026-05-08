@@ -53,10 +53,35 @@ export const deleteSet = async(req:Request, res:Response) => {
         if(!deleteSet){
             return res.status(404).json({error: "set not found"})
         }
-        res.status(204).json(deleteSet)
+        res.status(200).json(deleteSet)
 
     } catch (error){
         console.error("error deleteing set", error);
         res.status(500).json({error:"Failed to delete set"})
+    }
+}
+
+export const updateSet = async(req:Request, res:Response) => {
+    try{
+        const {id} = req.params;
+        const {weight, reps} = req.body;
+
+        const updateSet = await prisma.setEntry.update({
+            where:{
+                id: Number(id)
+               },
+               data: {
+                weight: Number(weight),
+                reps: Number(reps)
+               }
+        })
+        if(!updateSet){
+            return res.status(404).json({error:"set could not update"});
+            
+        }
+        res.status(200).json(updateSet);
+    } catch (error) {
+        console.error("error updating set", error);
+        res.status(500).json({error: "Failed to update set"})
     }
 }
