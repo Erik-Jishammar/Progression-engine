@@ -40,3 +40,23 @@ export const createSet = async(req:Request, res:Response) => {
         res.status(500).json({error:"failed to create set"})
     }
 }
+
+export const deleteSet = async(req:Request, res:Response) => {
+    try{
+        const {id} = req.params; 
+
+        const deleteSet = await prisma.setEntry.delete({
+            where: {
+                id: Number(id)
+            }
+        })
+        if(!deleteSet){
+            return res.status(404).json({error: "set not found"})
+        }
+        res.status(204).json(deleteSet)
+
+    } catch (error){
+        console.error("error deleteing set", error);
+        res.status(500).json({error:"Failed to delete set"})
+    }
+}
