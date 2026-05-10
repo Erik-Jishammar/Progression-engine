@@ -45,15 +45,12 @@ export const deleteSet = async(req:Request, res:Response) => {
     try{
         const {id} = req.params; 
 
-        const deleteSet = await prisma.setEntry.delete({
+        await prisma.setEntry.delete({
             where: {
                 id: Number(id)
             }
         })
-        if(!deleteSet){
-            return res.status(404).json({error: "set not found"})
-        }
-        res.status(200).json(deleteSet)
+        res.status(204).send();
 
     } catch (error){
         console.error("error deleteing set", error);

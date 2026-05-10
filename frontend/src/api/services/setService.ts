@@ -4,6 +4,9 @@ const baseUrl = `${BASE_URL}/set`
 
 export const getSets = async () => {
     const res = await fetch(baseUrl);
+    if (!res.ok){
+        throw new Error("failed to fetch sets")
+    }
     return res.json();
 }
 
@@ -16,6 +19,9 @@ export const createSet = async (data:
         },
         body: JSON.stringify(data),
     });
+    if(!res.ok){
+        throw new Error("failed to create set")
+    }
     return res.json();
 }
 
@@ -23,8 +29,11 @@ export const deleteSet = async (id: number) => {
     const res = await fetch(`${baseUrl}/${id}`, {
         method: "DELETE",
          })
+         if(!res.ok){
+            throw new Error("failed to delete set")
+         }
          if(res.status === 204){
-            return {sucess: true}
+            return {success: true};
          }
          return res.json();
         };
@@ -39,5 +48,8 @@ export const deleteSet = async (id: number) => {
                 },
                 body: JSON.stringify(data),
             });
+            if(!res.ok){
+                throw new Error("failed to update set")
+            }
             return res.json();
         }

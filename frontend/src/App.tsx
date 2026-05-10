@@ -1,12 +1,14 @@
 import { TestConnection } from "./api/components/TestConnection"
-import { TestSets } from "./api/components/TestSets"
+// import { TestSets } from "./api/components/TestSets"
+import { CheckServices } from "./api/components/serviceTest"
 
 function App(){
   return (
     <div>
       <h1>Progression Engine</h1>
       <TestConnection />
-      <TestSets />
+      {/* <TestSets /> */}
+      <CheckServices />
     </div>
   )
 }
