@@ -1,4 +1,4 @@
-import { BASE_URL } from "./apiConfig.js"; 
+import { BASE_URL } from "./apiConfig"; 
 import type {Exercise} from "../types"
 
 const baseUrl =`${BASE_URL}/exercise`
