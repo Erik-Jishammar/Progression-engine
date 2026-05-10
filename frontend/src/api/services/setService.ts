@@ -1,8 +1,9 @@
 import {BASE_URL} from "./apiConfig.js"
+import type {SetEntry} from "../types"
 
 const baseUrl = `${BASE_URL}/set`
 
-export const getSets = async () => {
+export const getSets = async (): Promise<SetEntry[]> => {
     const res = await fetch(baseUrl);
     if (!res.ok){
         throw new Error("failed to fetch sets")
@@ -11,7 +12,7 @@ export const getSets = async () => {
 }
 
 export const createSet = async (data: 
-    { exerciseId: number, weight: number, reps: number, workoutSessionId: number }) => {
+    { exerciseId: number, weight: number, reps: number, workoutSessionId: number }): Promise<SetEntry> => {
     const res = await fetch(baseUrl,{
         method: "POST",
         headers: {
@@ -40,7 +41,7 @@ export const deleteSet = async (id: number) => {
     
     export const updateSet = async(id:number, 
         data:{
-        weight: number, reps:number}) => {
+        weight: number, reps:number}): Promise<SetEntry> => {
             const res = await fetch(`${baseUrl}/${id}`, {
                 method: "PUT",
                 headers: {

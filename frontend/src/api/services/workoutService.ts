@@ -1,8 +1,9 @@
 import { BASE_URL } from "./apiConfig";
+import type {WorkoutSession} from "../types"
 
 const baseUrl = `${BASE_URL}/workout`; 
 
-export const getWorkouts = async() => {
+export const getWorkouts = async(): Promise<WorkoutSession[]> => {
     
     const res = await fetch(baseUrl);
     if (!res.ok){
@@ -12,7 +13,7 @@ export const getWorkouts = async() => {
     return res.json();
 }
 
-export const createWorkout = async(data:{userId:number}) => {
+export const createWorkout = async(data:{userId:number}): Promise<WorkoutSession> => {
     const res = await fetch(baseUrl, {
         method: "POST",
         headers: {
@@ -26,7 +27,7 @@ export const createWorkout = async(data:{userId:number}) => {
     return res.json();
 }
 
-export const deleteWorkout = async(id:number) => {
+export const deleteWorkout = async(id:number) =>  {
     const res = await fetch(`${baseUrl}/${id}`, {
         method: "DELETE",
     })
@@ -39,7 +40,7 @@ export const deleteWorkout = async(id:number) => {
     return res.json();
 }
     
-export const getWorkoutById = async(id:number) => {
+export const getWorkoutById = async(id:number): Promise<WorkoutSession> => {
     const res = await fetch(`${baseUrl}/${id}`);
     if(!res.ok){
         throw new Error("failed to fetch specific workout session")

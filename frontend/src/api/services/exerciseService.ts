@@ -1,8 +1,9 @@
 import { BASE_URL } from "./apiConfig.js"; 
+import type {Exercise} from "../types"
 
 const baseUrl =`${BASE_URL}/exercise`
 
-export const getExercises = async() => {
+export const getExercises = async():Promise<Exercise[]> => {
     const res = await fetch(baseUrl);
     if (!res.ok){
         throw new Error("failed to fetch exercises")
@@ -11,7 +12,7 @@ export const getExercises = async() => {
     return res.json();
 }
 
-export const createExercise = async (data:{name: String})  => {
+export const createExercise = async (data:{name: String}): Promise<Exercise>  => {
     const res = await fetch(baseUrl, {
         method: "POST",
         headers: {
@@ -25,7 +26,7 @@ export const createExercise = async (data:{name: String})  => {
     return res.json();
 }
 
-export const getExerciseById = async(id:number) => {
+export const getExerciseById = async(id:number): Promise<Exercise>  => {
     const res = await fetch(`${baseUrl}/${id}`)
     if (!res.ok){
         throw new Error("failed to fetch specific exercise")
@@ -33,7 +34,7 @@ export const getExerciseById = async(id:number) => {
     return res.json();
 }
 
-export const updateExercise = async(id:number, data: {name:string}) => {
+export const updateExercise = async(id:number, data: {name:string}): Promise<Exercise>  => {
     const res = await fetch(`${baseUrl}/${id}`, {
         method:"PUT",
         headers: {
