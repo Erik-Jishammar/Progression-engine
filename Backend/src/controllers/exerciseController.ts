@@ -5,6 +5,11 @@ import { prisma } from "../services/prisma.js";
 export const createExercise = async (req: Request, res: Response) => {
     try {
         const { name } = req.body;
+        // validatie name 
+        if(!name || name.trim().length === 0 ){
+            return res.status(400).json({error:"Exercise name is required"})
+        }
+
 
         const newExercise = await prisma.exercise.create({
             data: {
@@ -68,21 +73,34 @@ export const updateExercise = async(req:Request, res:Response) => {
     try{
         const {id} = req.params; 
         const {name} = req.body;
+        if (name === undefined){
+            return res.status(400).json({error:"Could not provide exercise name to update"})
+        }
+        if (name !== undefined){
+           // make sure its a string
+           if(typeof name !== 'string'){
+            return res.status(400).json({error:"Name must be a string"})
+           }
+           // make sure exercise name is not empty
+           if (name.trim().length === 0){
+            return res.status(400).json({error:" Updated name cannot be empty"})
+           }
+        }
 
-        const updateExercise = await prisma.exercise.update({
+        const updatedExercise = await prisma.exercise.update({
             where: {
                 id: Number(id)
             },
             data: {
-                name: String(name)
+                name: name !== undefined ? name.trim() : undefined
             }
         })
-        if (!updateExercise){
+        if (!updatedExercise){
             return res.status(404).json({error: "exercise could not update"})
         }
-        res.status(200).json(updateExercise);
+        res.status(200).json(updatedExercise);
     } catch(error) {
-        console.error("error updating exericse"); 
-        res.status(500).json({error: "Failed to update set"})
+        console.error("error updating exercise"); 
+        res.status(500).json({error: "Failed to update exercise"})
     }
 }

@@ -4,7 +4,10 @@ import { prisma } from "../services/prisma.js";
 export const createWorkout = async (req:Request, res: Response) => {
     try {
         const { userId} = req.body; 
-
+        if (!userId){
+            return res.status(400).json({error:"userId is missing"})
+        }
+        
         const newWorkout = await prisma.workoutSession.create({
             data: {
                 userId: Number(userId),

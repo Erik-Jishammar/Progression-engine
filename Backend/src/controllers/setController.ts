@@ -13,7 +13,7 @@ export const getAllSets = async(req: Request, res:Response ) => {
                 }
             }
         })
-        res.status(200).json(sets); 
+         res.status(200).json(sets); 
 
     } catch(error) {
         console.error("Error fetching sets", error); 
@@ -24,11 +24,25 @@ export const getAllSets = async(req: Request, res:Response ) => {
 export const createSet = async(req:Request, res:Response) => {
     try {
         const {weight, reps, workoutSessionId, exerciseId } = req.body; 
+       
+        // validation
+
+        const weightNum = Number(weight);
+        if(isNaN(weightNum) || weightNum <= 0){
+            return res.status(400).json({error: "Weight must be a positive number"});
+        }
+        const repsNum = Number(reps);
+        if(isNaN(repsNum) || repsNum <= 0){
+            return res.status(400).json({error: "Reps must be a atleast 1"})
+        }
+        if(!workoutSessionId || !exerciseId) {
+            return res.status(400).json({error: "Missing execiseId or workoutSessionId"});
+        }
 
         const newSet = await prisma.setEntry.create({
             data: {
-                weight: Number(weight),
-                reps: Number(reps),
+                weight: weightNum,
+                reps: repsNum,
                 workoutSessionId: Number(workoutSessionId),
                 exerciseId: Number(exerciseId)
             },
@@ -62,21 +76,39 @@ export const updateSet = async(req:Request, res:Response) => {
     try{
         const {id} = req.params;
         const {weight, reps} = req.body;
+        // validation 
+        if (weight === undefined && reps === undefined){
+            return res.status(400).json({error: "failed to provide data to update"})
+        }
+        if(weight !== undefined){
+            const weightNum = Number(weight);
+            if(isNaN(weightNum) || weightNum <= 0 ){
+                return res.status(400).json({error: "(UPDATE) weight must be a positive number"})
+            }
+        }
+        if (reps !== undefined){
+            const repsNum = Number(reps); 
+            if(isNaN(repsNum) || repsNum <= 0 ){
+                return res.status(400).json({error:"(UPDATE) reps must be atleast 1"})
+            }
+        }
 
-        const updateSet = await prisma.setEntry.update({
+
+        const updatedSet = await prisma.setEntry.update({
             where:{
                 id: Number(id)
                },
-               data: {
-                weight: Number(weight),
-                reps: Number(reps)
+             data: {
+                // only update fields that are provided, prisma ignores undefined
+                weight: weight !== undefined ? Number(weight) : undefined,
+                reps: reps !== undefined ? Number(reps) : undefined
                }
         })
-        if(!updateSet){
+        if(!updatedSet){
             return res.status(404).json({error:"set could not update"});
             
         }
-        res.status(200).json(updateSet);
+        res.status(200).json(updatedSet);
     } catch (error) {
         console.error("error updating set", error);
         res.status(500).json({error: "Failed to update set"})
