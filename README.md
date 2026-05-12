@@ -4,7 +4,7 @@ An intelligent fitness tracker that doesn't just log your lifts—it analyzes yo
 
 ## The Core: The Progression Engine
 What sets this project apart is the custom "Engine" built into the backend. It transforms raw workout data (weight and reps) into meaningful metrics:
-*   **Estimated 1RM (e1RM):** Utilizing the Brzycki formula to estimate strength capacity.
+*   **Estimated 1RM (e1RM):** Utilizing the Epley formula to estimate strength capacity.
 *   **Trend Analysis:** Analyzing volume and strength fluctuations over time.
 *   **Progression Scoring:** A point-based system that classifies training phases as *Progressing*, *Stable*, or *Stagnation*.
 
