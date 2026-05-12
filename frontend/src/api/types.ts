@@ -19,3 +19,5 @@ export interface SetEntry {
     workoutSessionId: number, 
     exerciseId: number
 }
+
+
