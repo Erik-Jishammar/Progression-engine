@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../services/prisma.js";
+import {calculateWorkout1rm} from "../engine/metrics.js"
 
 
 export const createExercise = async (req: Request, res: Response) => {
@@ -59,9 +60,12 @@ export const getExerciseById = async (req:Request, res:Response) => {
             }
         })
         if (!exercise) {
-            return res.status(404).json({error: "exercise not found"})
-        }
-        res.status(200).json(exercise)
+            return res.status(404).json({error: "specific exercise not found"})
+        } 
+        // estimated personal record(1RM) for one specfic exercise
+        const estimated1RM = calculateWorkout1rm(exercise.setEntries)
+        
+        res.status(200).json({...exercise,estimated1RM})
 
     } catch (error){
     console.error("error fetching exercise by ID", error); 

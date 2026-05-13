@@ -1,5 +1,6 @@
 import { Request, Response } from "express"; 
 import { prisma } from "../services/prisma.js";
+import { calculateWorkout1rm, calculateVolume} from "../engine/metrics.js"
 
 export const createWorkout = async (req:Request, res: Response) => {
     try {
@@ -29,8 +30,18 @@ export const getAllWorkouts = async(req:Request, res:Response) => {
                 setEntries: true, 
 
             }
+        }) 
+        // enrich session with calculated metrics, 1rm + volume
+        const workoutWithMetrics = workouts.map(workout => {
+            const workoutMax = calculateWorkout1rm(workout.setEntries);
+            const totalVolume = calculateVolume(workout.setEntries); 
+            return {
+                ...workout, workoutMax, totalVolume
+            };
         })
-        res.status(200).json(workouts); 
+
+        res.status(200).json(workoutWithMetrics); 
+        
     } catch (error) {
         console.error("error fetching all workouts ",error);
         res.status(500).json({error: "failed to fetch workouts"}) 
@@ -50,8 +61,11 @@ export const getWorkoutById = async(req:Request, res: Response) => {
         })
         if(!workout){
             return res.status(404).json({ error: "workout not found"})
-        }
-        res.status(200).json(workout); 
+        } // cal session-specific metrics using engine before returning res
+         const workoutMax = calculateWorkout1rm(workout.setEntries);
+         const totalVolume = calculateVolume(workout.setEntries);  
+
+        res.status(200).json({...workout, workoutMax, totalVolume}); 
     }catch (error){
         console.error("error fetching workout by id", error); 
         res.status(500).json({error:"failed to fetch workout"})
