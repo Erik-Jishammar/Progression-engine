@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { prisma } from "../services/prisma.js";
-import {calculateWorkout1rm, calculateVolume} from "../engine/metrics.js"
-import { trendAnalyze } from "../engine/trends.js";
-import { SetEntry } from "@prisma/client";
+import { analyzeExerciseHistory } from "../engine/services/analyzeExercise.js";
+
+
 
 export const createExercise = async (req: Request, res: Response) => {
     try {
@@ -55,7 +55,7 @@ export const getExerciseById = async (req:Request, res:Response) => {
                         workoutSession:true
                     },
                     orderBy: {
-                        createdAt: 'desc' // latest first
+                        createdAt: 'desc' 
                     }
                 }
             }
@@ -63,41 +63,12 @@ export const getExerciseById = async (req:Request, res:Response) => {
         if (!exercise) {
             return res.status(404).json({error: "specific exercise not found"})
         } 
-        const setEntries = exercise.setEntries; 
-        // group by session 
-        const grouped: Record<number, SetEntry[]> = {};
-        for(const set of setEntries){
-            const sessionId = set.workoutSessionId;
-            if(!grouped[sessionId]){
-                grouped[sessionId] = []; 
-            }
-            grouped[sessionId].push(set);
-        }
-        // transform to sortable array (newest session first)
-        const sessions = Object.entries(grouped)
-            .map(([sessionId, sets]) => ({
-                sessionId: Number(sessionId),
-                sets
-            }))
-            .sort((a, b) => b.sessionId - a.sessionId);
-
-        // calculate metrics per session (1rm & volume)
-        const oneRepMaxHistory = sessions.map(s => calculateWorkout1rm(s.sets));
-        const volumeHistory = sessions.map(s => calculateVolume(s.sets));
-
-        // trend analysis (index 0 is latest, index 1 is previous)
-        const oneRepMaxTrend = trendAnalyze(oneRepMaxHistory);
-        const volumeTrend = trendAnalyze(volumeHistory);
-
-        // calculate overall estimated 1rm (current state)
-        const estimated1RM = calculateWorkout1rm(exercise.setEntries);
+        const analytics = analyzeExerciseHistory(exercise.setEntries);
+        
         res.status(200).json({
             ...exercise,
-            estimated1RM,
-            oneRepMaxHistory,
-            volumeHistory,
-            oneRepMaxTrend,
-            volumeTrend
+            ...analytics
+            
         });
 } catch (error){
     console.error("error fetching exercise by ID", error); 
