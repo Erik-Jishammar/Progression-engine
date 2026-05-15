@@ -1,7 +1,7 @@
 import { SetEntry } from "@prisma/client";
 import { calculateWorkout1rm, calculateVolume } from "../metrics.js";
 import { trendAnalyze } from "../trends.js";
-
+import {scoringProgression} from "../scoring.js"
 export const analyzeExerciseHistory = (setEntries: SetEntry[]) => {
         // group by session 
         const grouped: Record<number, SetEntry[]> = {};
@@ -27,6 +27,8 @@ export const analyzeExerciseHistory = (setEntries: SetEntry[]) => {
         // trend analysis (index 0 is latest, index 1 is previous)
         const oneRepMaxTrend = trendAnalyze(oneRepMaxHistory);
         const volumeTrend = trendAnalyze(volumeHistory);
+        const progressionScore = scoringProgression(oneRepMaxTrend, volumeTrend);
+        
 
         // calculate overall estimated 1rm (current state)
         const estimated1RM = calculateWorkout1rm(setEntries);
@@ -36,6 +38,7 @@ export const analyzeExerciseHistory = (setEntries: SetEntry[]) => {
             volumeHistory,
             oneRepMaxTrend,
             volumeTrend,
-            estimated1RM
+            estimated1RM,
+            progressionScore
         }
 }
