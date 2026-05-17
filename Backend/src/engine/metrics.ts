@@ -1,8 +1,4 @@
-// calculate 1RM with -> which formula? The Epley Method seems most accurate when it comes to higher reps count
-// 1RM: Weight x (1 + (Reps / 30))
 
-// 1 for set, 1 for session, 1 for best set in specific exercise
-// calculate total volume per set/session 
 import { SetData } from "../types.js";
 
 export const calculateSet1rm = (weight: number, reps: number) => {
