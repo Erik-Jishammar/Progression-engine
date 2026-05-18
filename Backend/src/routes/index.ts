@@ -1,7 +1,7 @@
 import { Router } from "express"; 
 import { getAllSets, createSet, deleteSet, updateSet } from "../controllers/setController.js" 
 import { createWorkout, getAllWorkouts, getWorkoutById, deleteWorkout } from "../controllers/workoutController.js" 
-import {createExercise, getAllExercises, getExerciseById, updateExercise} from "../controllers/exerciseController.js"
+import {createExercise, getAllExercises, getExerciseById, updateExercise, getExerciseAnalysis} from "../controllers/exerciseController.js"
 
 const routes = Router(); 
 // sets
@@ -21,6 +21,7 @@ routes.post("/exercise", createExercise)
 routes.get("/exercise", getAllExercises)
 routes.get("/exercise/:id", getExerciseById)
 routes.put("/exercise/:id", updateExercise)
+routes.get("/exercise/:id/analysis", getExerciseAnalysis)
 
 
 export default routes; 

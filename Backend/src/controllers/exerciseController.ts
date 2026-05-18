@@ -111,3 +111,32 @@ export const updateExercise = async(req:Request, res:Response) => {
         res.status(500).json({error: "Failed to update exercise"})
     }
 }
+export const getExerciseAnalysis = async(req:Request, res:Response) => {
+   try{ 
+    const {id} = req.params; 
+    if(!id){
+        return res.status(400).json({error:"exerciseId is missing"})
+    }
+    const exercise = await prisma.exercise.findUnique({
+        where: {
+            id: Number(id)
+        }, include:{
+            setEntries: {
+                include: {
+                    workoutSession:true
+                }, orderBy:{
+                    createdAt: 'desc'
+                }
+            }
+        }
+    })
+    if(!exercise){
+        return res.status(404).json({error:"exercise not found"})
+    }
+    // send exercise to engine
+    const analyzeExercise = analyzeExerciseHistory(exercise.setEntries);
+    res.status(200).json(analyzeExercise);
+} catch (error){
+    console.error("error fetchning exercise analysis", error);
+    res.status(500).json({error:"failed to get exercise analysis"});
+}} 
