@@ -1,13 +1,33 @@
-import { CheckServices } from "./api/components/serviceTest"
+// import { CheckServices } from "./components/serviceTest"
+import {BrowserRouter, Routes, Route} from "react-router-dom";
+import { Dashboard } from "./pages/Dashboard";
+import { Navbar } from "./components/navbar";
+import { Footer } from "./components/footer";
+import { Exercises } from "./pages/Exercises";
+import "./styles/app.css"
 
-function App(){
+function App() {
+  
   return (
-    <div>
-      <h1>Progression Engine</h1>
+    <BrowserRouter>
+    <div className="app-container">
+      <Navbar />
+      <main className="main-content">
+      <Routes>
+
+      <Route path="/" element={<Dashboard />}> </Route>
+
+      <Route path="/exercises" element={<Exercises />} />
+
+       </Routes> 
+      </main>
       
-      <CheckServices />
+      <Footer />
+
+      {/* <CheckServices /> */}
 
     </div>
+    </BrowserRouter>
   )
 }
 export default App

@@ -1,0 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #080b11;
+  color: #f3f4f6;
+  font-family: sans-serif;
+}
+.main-content {
+  flex: 1;
+  padding: 2rem 0;
+}

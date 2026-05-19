@@ -1,5 +1,5 @@
 import {BASE_URL} from "./apiConfig"
-import type {SetEntry} from "../types"
+import type {SetEntry} from "./types"
 
 const baseUrl = `${BASE_URL}/set`
 

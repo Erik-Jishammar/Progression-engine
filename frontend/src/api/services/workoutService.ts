@@ -1,5 +1,5 @@
 import { BASE_URL } from "./apiConfig";
-import type {WorkoutSession} from "../types"
+import type {WorkoutSession} from "./types"
 
 const baseUrl = `${BASE_URL}/workout`; 
 
