@@ -114,3 +114,26 @@ export const updateSet = async(req:Request, res:Response) => {
         res.status(500).json({error: "Failed to update set"})
     }
 }
+ export const getSetsByExercise = async (req:Request, res:Response) => {
+        try{
+            const {exerciseId} = req.params; 
+            if(!exerciseId) {
+                return res.status(400).json({error: "missing exerciseId"}) 
+            }
+            const sets = await prisma.setEntry.findMany({
+                where:{
+                    exerciseId: Number(exerciseId)
+                }, 
+                include: {
+                    workoutSession:true},
+                    orderBy: {
+                        createdAt: "desc"
+                    }
+            })
+
+            res.status(200).json(sets); 
+        } catch(error){
+            console.error("error fetching sets by exercise", error); 
+            res.status(500).json({error: "failed to fetch sets"}) 
+        }
+    }
