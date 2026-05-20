@@ -10,7 +10,7 @@ export function Navbar() {
                 <NavLink to="/" className={({ isActive }) => `navbar-btn ${isActive ? "active" : ""}`}> Dashboard</NavLink>
 
 
-                <NavLink to="/exercises" className={({ isActive }) => `navbar-btn ${isActive ? "active" : ""}`}>Exercises</NavLink>
+                <NavLink to="/workout" className={({ isActive }) => `navbar-btn ${isActive ? "active" : ""}`}>Workout</NavLink>
             </div>
 
 

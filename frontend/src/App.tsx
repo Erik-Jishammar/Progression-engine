@@ -3,7 +3,8 @@ import {BrowserRouter, Routes, Route} from "react-router-dom";
 import { Dashboard } from "./pages/Dashboard";
 import { Navbar } from "./components/navbar";
 import { Footer } from "./components/footer";
-import { Exercises } from "./pages/Exercises";
+// import { Exercises } from "./pages/Exercises";
+import { Workout } from "./pages/workout";
 import "./styles/app.css"
 
 function App() {
@@ -17,7 +18,8 @@ function App() {
 
       <Route path="/" element={<Dashboard />}> </Route>
 
-      <Route path="/exercises" element={<Exercises />} />
+      {/* <Route path="/exercises" element={<Exercises />}  /> */}
+      <Route path="/workout" element ={<Workout />} />
 
        </Routes> 
       </main>
